@@ -1,21 +1,25 @@
 version: '3.8'
 
 services:
-
   backend:
-    build:
-      context: ./server
-    container_name: flask-backend
+    image: vijay171202/backend
+    container_name: backend
+    restart: always
     ports:
       - "5001:5001"
-    restart: always
+     networks:
+      - app-network
 
   frontend:
-    build:
-      context: ./client
-    container_name: vue-frontend
+    image: vijay171202/frontend
+    container_name: frontend
+    restart: always
     ports:
-      - "5173:5173"
+      "5173:5173"
     depends_on:
       - backend
-    restart: always
+     networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
