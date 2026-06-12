@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./server
+    container_name: flask-backend
+    ports:
+      - "5001:5001"
+
+  frontend:
+    build: ./client
+    container_name: vue-frontend
+    ports:
+      - "5057:5057"
+
+    depends_on:
+      - backend
