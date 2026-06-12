@@ -7,7 +7,7 @@ services:
     restart: always
     ports:
       - "5001:5001"
-     networks:
+    networks:
       - app-network
 
   frontend:
@@ -15,11 +15,12 @@ services:
     container_name: frontend
     restart: always
     ports:
-      "5173:5173"
+      - "5173:5173"
     depends_on:
       - backend
-     networks:
+    networks:
       - app-network
+
 networks:
   app-network:
     driver: bridge
