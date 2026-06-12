@@ -1,0 +1,70 @@
+pipeline{
+    agent any
+    
+    environment {
+        SCANNER_HOME= tool "sonarqube"
+         DOCKER_USER = "vijay171202"
+       
+    }
+    stages{
+        stage("CLONE_REPOSITORY"){
+            steps{
+                git branch: 'main', url: 'https://github.com/Vijayprajapat17/flask-vue-crud.git'
+            }
+        }
+        stage("CHECK-CODE-QUALITY"){
+            steps{
+                 withSonarQubeEnv( 'sonarqube') {
+                 sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=flask-vue-crud \
+                        -Dsonar.projectKey=flask-vue-crud \
+                         -Dsonar.sources=. \
+                         -Dsonar.exclusions=client/**
+                         '''
+                 }
+
+            }
+        }
+     stage('Build Images') {
+            steps {
+                sh '''
+                docker build -t $DOCKER_USER/backend:latest ./server
+                docker build -t $DOCKER_USER/frontend:latest ./client
+                '''
+            }
+        }
+         stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-cred',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    sh '''
+                    echo $PASSWORD | docker login -u $USERNAME --password-stdin
+                    '''
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                sh '''
+                docker push $DOCKER_USER/backend:latest
+                docker push $DOCKER_USER/frontend:latest
+                '''
+            }
+        }
+       stage('Deploy with Docker Compose') {
+    steps {
+        sh '''
+            docker-compose down || true
+            docker-compose pull
+            docker-compose build --no-cache
+            docker-compose up -d 
+        '''
+    }
+}
+      }
+      
+    }
