@@ -76,7 +76,7 @@ sonarqube
 
 # AWS Setup
 
-An Amazon Linux 2023 EC2 instance was used as the deployment server.
+An Amazon Ubuntu:latest EC2 instance was used as the deployment server.
 
 ### Installed Components
 
