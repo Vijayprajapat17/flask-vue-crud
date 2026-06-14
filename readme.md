@@ -13,7 +13,6 @@ A key requirement of this project is that server access is managed exclusively t
 # Technologies Used
 
 * Jenkins Declarative Pipeline
-* Flask
 * Vue.js
 * Docker
 * Docker Compose
