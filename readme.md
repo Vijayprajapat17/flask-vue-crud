@@ -269,6 +269,84 @@ AmazonSSMManagedInstanceCore
 This policy enables secure remote management through Systems Manager.
 
 ---
+## AWS Deployment Using Systems Manager (SSM)
+
+### Deployment Approach
+
+This project is deployed on an AWS EC2 instance using **AWS Systems Manager (SSM) SendCommand** instead of SSH access.
+
+### Why SSM?
+
+- No need to open SSH port (22) on the EC2 instance.
+- Secure remote command execution through AWS IAM.
+- Centralized management and auditing of deployment commands.
+- Fully compliant with the assignment requirement to use AWS Systems Manager.
+
+### Required IAM Permissions
+
+The Jenkins/AWS CLI user used for deployment requires the following permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:SendCommand",
+        "ssm:GetCommandInvocation",
+        "ssm:ListCommandInvocations",
+        "ec2:DescribeInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+### EC2 Instance Configuration
+
+The EC2 instance is configured with the AWS managed policy:
+
+```text
+AmazonSSMManagedInstanceCore
+```
+
+This policy allows the SSM Agent running on the instance to communicate with AWS Systems Manager.
+
+### Deployment Workflow
+
+1. Jenkins triggers the deployment stage.
+2. AWS CLI sends commands using `ssm:SendCommand`.
+3. AWS Systems Manager delivers the commands to the EC2 instance.
+4. The SSM Agent executes the deployment commands.
+5. Docker Compose updates and starts the application containers.
+
+### Example Deployment Command
+
+```bash
+aws ssm send-command \
+  --instance-ids <INSTANCE_ID> \
+  --document-name "AWS-RunShellScript" \
+  --parameters commands="docker ps"
+```
+
+### Verification
+
+Deployment execution can be verified using:
+
+```bash
+aws ssm get-command-invocation \
+  --command-id <COMMAND_ID> \
+  --instance-id <INSTANCE_ID>
+```
+
+A successful deployment returns:
+
+```text
+Status: Success
+ResponseCode: 0
+```
 
 # Conclusion
 
