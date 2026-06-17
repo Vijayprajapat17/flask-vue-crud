@@ -12,6 +12,7 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/Vijayprajapat17/flask-vue-crud.git'
             }
         }
+      
         stage("CHECK-CODE-QUALITY"){
             steps{
                  withSonarQubeEnv( 'sonarqube') {
@@ -55,13 +56,18 @@ pipeline{
                 '''
             }
         }
-       stage('Deploy with Docker Compose') {
+     stage('Deploy with Docker Compose via SSM') {
     steps {
         sh '''
-            docker-compose down || true
-            docker-compose pull
-            docker-compose build --no-cache
-            docker-compose up -d 
+        aws ssm send-command \
+        --instance-ids i-0cf8874226b082c95 \
+        --document-name "AWS-RunShellScript" \
+        --parameters 'commands=[
+        "cd /home/ec2-user/flask-vue-crud",
+        "docker compose pull",
+        "docker compose down",
+        "docker compose up -d"
+        ]'
         '''
     }
 }
