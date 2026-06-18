@@ -17,7 +17,7 @@ A key requirement of this project is that server access is managed exclusively t
 * Vue.js
 * Docker
 * Docker Compose
-* AWS EC2 (Amazon Ubuntu:latest)
+* AWS EC2 (Amazon Linux 2023)
 * AWS Systems Manager (SSM)
 * Docker Hub
 * SonarQube
@@ -76,7 +76,7 @@ sonarqube
 
 # AWS Setup
 
-An Amazon Ubuntu:latest EC2 instance was used as the deployment server.
+An Amazon Linux 2023 EC2 instance was used as the deployment server.
 
 ### Installed Components
 
