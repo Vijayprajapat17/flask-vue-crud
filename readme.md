@@ -22,7 +22,6 @@ A key requirement of this project is that server access is managed exclusively t
 * Docker Hub
 * SonarQube
 
----
 
 # Project Structure
 
@@ -350,4 +349,4 @@ ResponseCode: 0
 
 # Conclusion
 
-This project demonstrates a CI/CD implementation for a Flask and Vue.js application using Jenkins, Docker, Docker Compose, AWS EC2, and SonarQube. The solution automates the build, analysis, containerization, and deployment process while following secure deployment practices.
+This project demonstrates a CI/CD implementation for a Flask and Vue.js application using Jenkins, Docker, Docker Compose, AWS EC2, and SonarQube. The solution automates the build, analysis, containerization, and deployment process while following secure deployment practices..
