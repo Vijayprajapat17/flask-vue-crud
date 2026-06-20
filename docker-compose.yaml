@@ -8,7 +8,7 @@ services:
     ports:
       - "5001:5001"
     networks:
-      - flask-vue-crud_app-network
+      - app-network
 
   frontend:
     image: vijay171202/frontend:latest
@@ -17,8 +17,6 @@ services:
     ports:
       - "5173:5173"
     networks:
-      - flask-vue-crud_app-network
+      - app-network
 
-networks:
-  flask-vue-crud_app-network:
-    driver: bridge
+
