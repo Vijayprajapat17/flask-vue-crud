@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: vijay171202/backend
+    image: vijay171202/backend:latest
     container_name: backend
     restart: always
     ports:
@@ -11,7 +11,7 @@ services:
       - app-network
 
   frontend:
-    image: vijay171202/frontend
+    image: vijay171202/frontend:latest
     container_name: frontend
     restart: always
     ports:
